@@ -1,6 +1,6 @@
 import { WebSocketServer, WebSocket } from 'ws';
 import { Server } from 'http';
-import { generateChatResponse } from './openai.js';
+import { generateChatResponse } from './gemini.js';
 import { storage } from '../storage.js';
 
 interface ChatMessage {
