@@ -104,7 +104,7 @@
 
 ### Google Gemini AI Setup
 
-1. Visit [Google AI Studio](https://makersuite.google.com/app/apikey)
+1. Visit [Google AI Studio](https://makersuite.google.com)
 2. Create a new API key
 3. Add the API key to your `.env` file as `GEMINI_API_KEY`
 
