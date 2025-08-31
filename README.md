@@ -217,8 +217,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 👨‍💻 Author
 
 **Alan Joseph Monichan**
-- GitHub: [@alanjosephmonichan](https://github.com/alanjosephmonichan)
-- Project: [ChatPDFPilot](https://github.com/alanjosephmonichan/ChatPDFPilot)
+- GitHub: [@alanjoseph77](https://github.com/alanjoseph77)
+- Project: [ChatPDFPilot](https://github.com/alanjoseph77/ChatPDFPilot)
 
 ## 🙏 Acknowledgments
 
@@ -227,13 +227,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - The React and Node.js communities
 - All contributors and users
 
-## 📞 Support
 
-If you encounter any issues or have questions:
-
-1. Check the [Issues](https://github.com/alanjosephmonichan/ChatPDFPilot/issues) page
-2. Create a new issue with detailed information
-3. Contact the author directly
 
 ---
 
