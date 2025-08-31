@@ -25,12 +25,24 @@ export function FileUpload({ onDocumentUploaded }: FileUploadProps) {
       const formData = new FormData();
       formData.append('file', file);
       
-      // Log FormData contents
-      console.log('FormData created, file appended');
+      console.log('Making direct fetch to backend...');
       
-      const response = await apiRequest('POST', '/api/documents', formData);
+      // Direct fetch without using apiRequest to avoid any proxy issues
+      const response = await fetch('http://localhost:5000/api/documents', {
+        method: 'POST',
+        body: formData,
+        mode: 'cors',
+      });
+      
+      console.log('Response status:', response.status, response.statusText);
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Upload failed:', errorText);
+        throw new Error(`Upload failed: ${response.status} ${errorText}`);
+      }
+      
       const result = await response.json();
-      
       console.log('Upload successful:', result);
       return result;
     },
