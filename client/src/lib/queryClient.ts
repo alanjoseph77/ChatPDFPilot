@@ -15,16 +15,19 @@ export async function apiRequest(
   try {
     const isFormData = data instanceof FormData;
     
-    console.log(`Making ${method} request to ${url}`, {
+    // Use full URL for development to bypass proxy issues
+    const fullUrl = url.startsWith('http') ? url : `http://localhost:5000${url}`;
+    
+    console.log(`Making ${method} request to ${fullUrl}`, {
       isFormData,
       hasData: !!data
     });
     
-    const res = await fetch(url, {
+    const res = await fetch(fullUrl, {
       method,
       headers: (data && !isFormData) ? { "Content-Type": "application/json" } : {},
       body: isFormData ? data : (data ? JSON.stringify(data) : undefined),
-      credentials: "include",
+      mode: 'cors',
     });
 
     console.log(`Response: ${res.status} ${res.statusText}`);
@@ -43,8 +46,11 @@ export const getQueryFn: <T>(options: {
 }) => QueryFunction<T> =
   ({ on401: unauthorizedBehavior }) =>
   async ({ queryKey }) => {
-    const res = await fetch(queryKey.join("/") as string, {
-      credentials: "include",
+    const url = queryKey.join("/") as string;
+    const fullUrl = url.startsWith('http') ? url : `http://localhost:5000${url}`;
+    
+    const res = await fetch(fullUrl, {
+      mode: 'cors',
     });
 
     if (unauthorizedBehavior === "returnNull" && res.status === 401) {
