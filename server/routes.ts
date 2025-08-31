@@ -7,7 +7,12 @@ import { summarizeDocument } from "./services/openai.js";
 import multer from "multer";
 import { insertDocumentSchema, insertChatSessionSchema } from "@shared/schema";
 
-const upload = multer({ storage: multer.memoryStorage() });
+const upload = multer({ 
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 10 * 1024 * 1024 // 10MB limit
+  }
+});
 
 export async function registerRoutes(app: Express): Promise<Server> {
   const httpServer = createServer(app);
@@ -39,11 +44,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Upload document
-  app.post("/api/documents", upload.single("file"), async (req, res) => {
+  app.post("/api/documents", (req, res, next) => {
+    upload.single("file")(req, res, (err) => {
+      if (err) {
+        console.error("Multer error:", err);
+        if (err.code === 'LIMIT_FILE_SIZE') {
+          return res.status(400).json({ message: "File size must be less than 10MB" });
+        }
+        return res.status(400).json({ message: "File upload error: " + err.message });
+      }
+      next();
+    });
+  }, async (req, res) => {
     try {
+      console.log("Upload attempt - File received:", !!req.file);
+      
       if (!req.file) {
         return res.status(400).json({ message: "No file uploaded" });
       }
+
+      console.log("File details:", {
+        originalname: req.file.originalname,
+        mimetype: req.file.mimetype,
+        size: req.file.size
+      });
 
       validatePDFFile(req.file);
       
@@ -65,12 +89,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
         documentId: document.id,
       });
 
+      console.log("Document uploaded successfully:", document.id);
+
       res.status(201).json({
         document,
         sessionId: session.id,
       });
     } catch (error) {
-      console.error("Upload error:", error);
+      console.error("Upload processing error:", error);
       res.status(400).json({ message: error instanceof Error ? error.message : "Failed to upload document" });
     }
   });
