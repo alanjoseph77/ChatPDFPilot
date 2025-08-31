@@ -1,0 +1,20 @@
+{
+  "name": "@chatpdfpilot/shared",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "dependencies": {
+    "zod": "^3.24.2",
+    "drizzle-orm": "^0.39.1",
+    "drizzle-zod": "^0.7.0"
+  },
+  "devDependencies": {
+    "typescript": "5.6.3"
+  }
+}
