@@ -18,6 +18,8 @@ export function useWebSocket({ sessionId, onMessage }: UseWebSocketProps) {
   const ws = useRef<WebSocket | null>(null);
 
   useEffect(() => {
+    if (!sessionId) return;
+
     const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
     const wsUrl = `${protocol}//${window.location.host}/ws`;
     
@@ -54,9 +56,11 @@ export function useWebSocket({ sessionId, onMessage }: UseWebSocketProps) {
     };
 
     return () => {
-      ws.current?.close();
+      if (ws.current) {
+        ws.current.close();
+      }
     };
-  }, [onMessage]);
+  }, [sessionId, onMessage]);
 
   const sendMessage = (content: string) => {
     if (ws.current?.readyState === WebSocket.OPEN && sessionId) {
