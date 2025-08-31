@@ -16,11 +16,23 @@ export function FileUpload({ onDocumentUploaded }: FileUploadProps) {
 
   const uploadMutation = useMutation({
     mutationFn: async (file: File) => {
+      console.log('Starting file upload:', {
+        name: file.name,
+        size: file.size,
+        type: file.type
+      });
+      
       const formData = new FormData();
       formData.append('file', file);
       
+      // Log FormData contents
+      console.log('FormData created, file appended');
+      
       const response = await apiRequest('POST', '/api/documents', formData);
-      return response.json();
+      const result = await response.json();
+      
+      console.log('Upload successful:', result);
+      return result;
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['/api/documents'] });
