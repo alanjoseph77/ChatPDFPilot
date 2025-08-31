@@ -46,7 +46,7 @@
 
 - Node.js 18 or higher
 - npm package manager
-- Google Gemini API key ([Get one here](https://makersuite.google.com/app/apikey))
+- Google Gemini API key 
 
 ## 🚀 Quick Start
 
